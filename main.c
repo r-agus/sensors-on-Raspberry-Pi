@@ -62,7 +62,7 @@ int main(){
 
 	while(1){
 		result = read(STDIN_FILENO, &c, 1);
-
+		usleep(10000);
 		if(result > 0 && c == '1') { 	// Start/stop accelerometer
 			c = 0;
 			if(!accelerometer_alive){

@@ -13,7 +13,6 @@ void exit_handler(int signum) {
     printf("\033[J\033[38;2;255;255;255mColor sensor off\n");
     printf("\033[?25h");
     close(i2c_fd);
-//    exit(1);
 }
 
 void colors(){
@@ -31,16 +30,11 @@ void colors(){
         exit(1);
     } else fd_open = 1;
 
-//    signal(SIGINT, exit_handler);
-
     // Set the I2C slave address
     if (ioctl(i2c_fd, I2C_SLAVE, COLOR_SENSOR_ADDR) < 0) {
         perror("Failed to set the I2C slave address");
         exit(1);
     }
-
-//    fcntl(pipe_col_sen_msg_fd[0], F_SETFL, O_NONBLOCK);
-//    close(pipe_flash_fd[1]);							// Closes write end of the pipe
 
     write_register(i2c_fd, 0x80, 0x03);
     usleep(5000);
@@ -56,9 +50,7 @@ void colors(){
 
     start = time(NULL);
     while(color_sensor_alive){
-//    	int result = read(pipe_flash_fd[0], &c, 1);
-    	usleep(1000);
-
+    	usleep(10000);
     	if(!fd_open){
     		i2c_fd = open(I2C_BUS, O_RDWR);
     		    if (i2c_fd < 0) {
@@ -66,7 +58,6 @@ void colors(){
     		        exit(1);
     		    }
     	}
-
         if(flash == 1) {				// 'f' pressed
         	toggle_flash(&light);
             flash = 0;
