@@ -69,7 +69,7 @@ void colors(){
 //            	fflush(stdout);
             	error_measure = 0;
             	// Old data
-            	color_sensor_data_ready = 0;
+            	atomic_exchange(&color_sensor_data_ready,0);
                 read_color(i2c_fd, color);
                 raw_colors.clear	=	color[1] << 8 | color[0];
                 raw_colors.red		= 	color[3] << 8 | color[2];
@@ -113,7 +113,7 @@ void colors(){
 					strcat(color_sensor_msg, "\n\033[38;2;0;0;255mB : 255 *            \r\033[2A\033[38;2;255;255;255m");
 
                 }
-                color_sensor_data_ready = 1;
+                atomic_exchange(&color_sensor_data_ready,1);
                 start = end; // reset the start time
             }
         }

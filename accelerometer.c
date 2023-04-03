@@ -46,8 +46,7 @@ void acceleration(){
         sleep(3);
         read_acceleration(fd, rd_buf);
 
-        // Unsecure variable
-        acc_data_ready = 0;
+        atomic_exchange(&acc_data_ready, 0);
 
 		ax = rd_buf[0] << 8 | rd_buf[1];
         ay = rd_buf[2] << 8 | rd_buf[3];
@@ -61,7 +60,7 @@ void acceleration(){
         // Send data to main
         sprintf(write_buf, "%f %f %f", ax, ay, az);
 
-        acc_data_ready = 1;
+        atomic_exchange(&acc_data_ready, 1);
     }
 
     stop_acc_measurements(1);

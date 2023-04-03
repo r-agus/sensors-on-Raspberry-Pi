@@ -89,13 +89,13 @@ int main(){
 		}
 		// Represent data
 		if(accelerometer_alive && color_sensor_alive){
-			if(color_sensor_data_ready) {
-				color_sensor_data_ready = 0;
+			if(atomic_load(&color_sensor_data_ready)) {
+				atomic_exchange(&color_sensor_data_ready, 0);
 				represent_color_sensor_data = 1;
 				sprintf(copy_color_sensor_msg, color_sensor_msg);
 			}
-			if(acc_data_ready) {
-				acc_data_ready = 0;
+			if(atomic_load(&acc_data_ready)) {
+				atomic_exchange(&acc_data_ready, 0);
 				represent_acc_data = 1;
 				copy_acc_values[0] = ax;
 				copy_acc_values[1] = ay;
@@ -109,13 +109,13 @@ int main(){
 			}
 		}
 		if(accelerometer_alive && !color_sensor_alive){
-			if(acc_data_ready){
+			if(atomic_load(&acc_data_ready)){
 				printf("Acceleration: x = %.2f, y = %.2f, z = %.2f\r", ax, ay, az);
 				fflush(stdout);
 			}
 		}
 		if(color_sensor_alive && !accelerometer_alive){
-			if(color_sensor_data_ready)
+			if(atomic_load(&color_sensor_data_ready))
 				printf("%s", color_sensor_msg);
 			fflush(stdout);
 			}
