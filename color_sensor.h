@@ -20,7 +20,7 @@ void restore_signals();
 void toggle_flash(uint8_t *flash);
 
 extern uint8_t color_sensor_alive;
-extern uint8_t color_sensor_data_ready;
+extern atomic_int color_sensor_data_ready;
 
 extern char color_sensor_msg[1500];
 

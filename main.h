@@ -19,4 +19,6 @@
 #include <time.h>
 #include <termios.h>
 #include <pthread.h>
+#include <stdatomic.h>
+
 #endif /* MAIN_H_ */

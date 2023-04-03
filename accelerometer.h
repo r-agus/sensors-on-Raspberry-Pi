@@ -20,7 +20,7 @@
 #define MPU6050_ACCEL_ZOUT_L   0x40
 
 extern float ax, ay, az;       // Acceleration values
-extern uint8_t acc_data_ready;
+extern atomic_int acc_data_ready;
 extern uint8_t accelerometer_alive;
 
 

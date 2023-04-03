@@ -23,8 +23,9 @@ pthread_t thread_color_sensor, thread_acc;
 int thread_error;
 uint8_t color_sensor_alive, accelerometer_alive;
 
-uint8_t color_sensor_data_ready = 0, represent_color_sensor_data = 0;
-uint8_t acc_data_ready = 0, represent_acc_data = 0;
+atomic_int color_sensor_data_ready = 0;
+atomic_int acc_data_ready = 0;
+uint8_t represent_acc_data = 0, represent_color_sensor_data = 0;
 
 uint8_t flash = 0;
 

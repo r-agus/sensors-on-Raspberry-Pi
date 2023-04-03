@@ -46,6 +46,7 @@ void acceleration(){
         sleep(3);
         read_acceleration(fd, rd_buf);
 
+        // Unsecure variable
         acc_data_ready = 0;
 
 		ax = rd_buf[0] << 8 | rd_buf[1];
@@ -59,6 +60,7 @@ void acceleration(){
 
         // Send data to main
         sprintf(write_buf, "%f %f %f", ax, ay, az);
+
         acc_data_ready = 1;
     }
 
