@@ -7,6 +7,7 @@
 #include "color_sensor.h"
 int i2c_fd;
 uint8_t fd_open = 0;
+uint8_t light = 0;
 
 void exit_handler(int signum) {
     printf("\033[J\033[38;2;255;255;255mColor sensor off\n");
@@ -67,7 +68,7 @@ void colors(){
     	}
 
         if(flash == 1) {				// 'f' pressed
-            toggle_flash(&flash);
+        	toggle_flash(&light);
             flash = 0;
         } else{
             end = time(NULL);
@@ -104,13 +105,16 @@ void colors(){
                 if (!(error_measure & 0x8)){	// Clear == 0
                 	char tmp[100] = "";
                 	sprintf(tmp, "\033[38;2;255;0;0mR: %.0f        \r", proc_colors.red);
-					(error_measure & 0x4) ? strcat(color_sensor_msg, "\033[38;2;255;0;0mIR > RED      \r")	   : strcat(color_sensor_msg, tmp);  // Set foreground color to red and write red value
+					(error_measure & 0x4) ? strcat(color_sensor_msg, "\033[38;2;255;0;0mIR > RED      \r")
+							: strcat(color_sensor_msg, tmp);  // Set foreground color to red and write red value
 					*tmp = 0;
 					sprintf(tmp, "\n\033[38;2;0;255;0mG: %.0f      \r", proc_colors.green);
-					(error_measure & 0x2) ? strcat(color_sensor_msg, "\n\033[38;2;0;255;0mIR > GREEN  \r")      : strcat(color_sensor_msg, tmp);  // Set foreground color to green and write green value
+					(error_measure & 0x2) ? strcat(color_sensor_msg, "\n\033[38;2;0;255;0mIR > GREEN  \r")
+							: strcat(color_sensor_msg, tmp);  // Set foreground color to green and write green value
 					*tmp = 0;
 					sprintf(tmp, "\n\033[38;2;0;0;255mB: %.0f      \r\033[2A\033[38;2;255;255;255m", proc_colors.blue);
-					(error_measure & 0x1) ? strcat(color_sensor_msg, "\n\033[38;2;0;0;255mIR > BLUE   \r\033[2A\033[38;2;255;255;255m"): strcat(color_sensor_msg, tmp);  // Set foreground color to blue and write blue value
+					(error_measure & 0x1) ? strcat(color_sensor_msg, "\n\033[38;2;0;0;255mIR > BLUE   \r\033[2A\033[38;2;255;255;255m")
+							: strcat(color_sensor_msg, tmp);  // Set foreground color to blue and write blue value
 
                 } else{
                 	strcat(color_sensor_msg, "\033[38;2;255;0;0mR : 255 *                \r");

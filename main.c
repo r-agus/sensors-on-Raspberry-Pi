@@ -23,8 +23,8 @@ pthread_t thread_color_sensor, thread_acc;
 int thread_error;
 uint8_t color_sensor_alive, accelerometer_alive;
 
-uint8_t color_sensor_data_ready = 0;
-uint8_t acc_data_ready = 0;
+uint8_t color_sensor_data_ready = 0, represent_color_sensor_data = 0;
+uint8_t acc_data_ready = 0, represent_acc_data = 0;
 
 uint8_t flash = 0;
 
@@ -52,6 +52,8 @@ int main(){
 	char c = 0;	// keyboard input
 	int result;	// error check
 
+	char copy_color_sensor_msg[1500];
+	float copy_acc_values[3];
 	init_signals();
 
 	signal(SIGINT, sigint_handler);
@@ -68,11 +70,10 @@ int main(){
 				fflush(stdout);
 				thread_error = pthread_create(&thread_color_sensor, NULL, &start_accelerometer, NULL);
 				accelerometer_alive = 1;
-			} else{		// Turn off accelerometer
-				accelerometer_alive = 0; //kill(accelerometer_pid, SIGINT);
+			} else{											// Turn off accelerometer
+				accelerometer_alive = 0; 					//kill(accelerometer_pid, SIGINT);
 			}
-//			toggle_value(&accelerometer_alive);
-		}else if(result > 0 && c == '2') { 	// Start/stop color_sensor
+		}else if(result > 0 && c == '2') { 					// Start/stop color_sensor
 			c = 0;
 			if(!color_sensor_alive){
 				printf("Color sensor starts\n");
@@ -82,19 +83,28 @@ int main(){
 			}else {
 				color_sensor_alive = 0;
 			}
-//			toggle_value(&color_sensor_alive);
 		} if(result > 0 && c == 'f') {
-			// Toggle flash from color sensor
 			flash = 1;
-			printf("FLASH\n");
 		}
 		// Represent data
 		if(accelerometer_alive && color_sensor_alive){
-			if(acc_data_ready && color_sensor_data_ready){
-				printf("\n\nAcceleration: x = %.2f, y = %.2f, z = %.2f\n\n", ax, ay, az);
+			if(color_sensor_data_ready) {
+				color_sensor_data_ready = 0;
+				represent_color_sensor_data = 1;
+				sprintf(copy_color_sensor_msg, color_sensor_msg);
+			}
+			if(acc_data_ready) {
+				acc_data_ready = 0;
+				represent_acc_data = 1;
+				copy_acc_values[0] = ax;
+				copy_acc_values[1] = ay;
+				copy_acc_values[2] = az;
+			}
+			if(represent_color_sensor_data && represent_acc_data){
+				printf("Acceleration: x = %.2f, y = %.2f, z = %.2f\r", copy_acc_values[0], copy_acc_values[1], copy_acc_values[2]);
+				printf("%s", copy_color_sensor_msg);
 				fflush(stdout);
-				sleep(1);
-//					printf("%s", color_sensor_msg);
+				represent_acc_data = represent_color_sensor_data = 0;
 			}
 		}
 		if(accelerometer_alive && !color_sensor_alive){
