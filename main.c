@@ -73,6 +73,7 @@ int main(){
 				accelerometer_alive = 1;
 			} else{											// Turn off accelerometer
 				accelerometer_alive = 0; 					//kill(accelerometer_pid, SIGINT);
+				stop_acc_measurements(1);
 			}
 		}else if(result > 0 && c == '2') { 					// Start/stop color_sensor
 			c = 0;
@@ -83,6 +84,7 @@ int main(){
 				color_sensor_alive = 1;
 			}else {
 				color_sensor_alive = 0;
+				exit_handler(1);
 			}
 		} if(result > 0 && c == 'f') {
 			flash = 1;

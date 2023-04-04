@@ -63,7 +63,7 @@ void acceleration(){
         atomic_exchange(&acc_data_ready, 1);
     }
 
-    stop_acc_measurements(1);
+//    stop_acc_measurements(1);
 }
 
 void write_acc_register(int file, unsigned char reg, unsigned char value){

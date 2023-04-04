@@ -120,7 +120,7 @@ void colors(){
 
     }
 
-    exit_handler(1);
+    //exit_handler(1);
 }
 
 void write_register(int i2c_fd, unsigned char reg, unsigned char value){
