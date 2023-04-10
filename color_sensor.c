@@ -2,7 +2,7 @@
  * color_sensor.c
  *
  *  Created on: Mar 25, 2023
- *      Author: ruben
+ *      Author: Ruben Agustin & Hao Feng
  */
 #include "color_sensor.h"
 int i2c_fd;

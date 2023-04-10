@@ -2,7 +2,7 @@
  * main.c
  *
  *  Created on: Mar 2023
- *      Author: Ruben Agustin
+ *      Author: Ruben Agustin & Hao Feng
  */
 #include "main.h"
 #define MAIN_H
@@ -40,11 +40,12 @@ struct termios original_termios = {0}, modified_termios = {0};
 
 
 void sigint_handler(int signum) {
+	int time = 1;			// Original time that requires to close
 	printf("Exiting, wait till everything is closed\n");
-	if(accelerometer_alive) accelerometer_alive = 0;
-	if(color_sensor_alive)	color_sensor_alive = 0;
+	if(accelerometer_alive) {accelerometer_alive = 0; stop_acc_measurements(1); time+=3;}
+	if(color_sensor_alive)	{color_sensor_alive = 0; exit_handler(1); time+=3;}
 	tcsetattr(STDIN_FILENO, TCSANOW, &original_termios);
-	sleep(5);
+	sleep(time);
     exit(1);
 }
 
@@ -64,7 +65,7 @@ int main(){
 	while(1){
 		result = read(STDIN_FILENO, &c, 1);
 		usleep(10000);
-		if(result > 0 && c == '1') { 	// Start/stop accelerometer
+		if(result > 0 && c == '1') { 						// Start/stop accelerometer
 			c = 0;
 			if(!accelerometer_alive){
 				printf("Accelerometer starts\n");
@@ -72,7 +73,7 @@ int main(){
 				thread_error = pthread_create(&thread_color_sensor, NULL, &start_accelerometer, NULL);
 				accelerometer_alive = 1;
 			} else{											// Turn off accelerometer
-				accelerometer_alive = 0; 					//kill(accelerometer_pid, SIGINT);
+				accelerometer_alive = 0; 					// Fuction that closes acc
 				stop_acc_measurements(1);
 			}
 		}else if(result > 0 && c == '2') { 					// Start/stop color_sensor
@@ -84,7 +85,7 @@ int main(){
 				color_sensor_alive = 1;
 			}else {
 				color_sensor_alive = 0;
-				exit_handler(1);
+				exit_handler(1);							// Calls function that closes color sensor
 			}
 		} if(result > 0 && c == 'f') {
 			flash = 1;

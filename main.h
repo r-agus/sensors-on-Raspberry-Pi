@@ -2,7 +2,7 @@
  * main.h
  *
  *  Created on: Mar 25, 2023
- *      Author: ruben
+ *      Author: Ruben Agustin & Hao Feng
  */
 
 #ifndef MAIN_H

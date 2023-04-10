@@ -2,7 +2,7 @@
  * color_sensor.h
  *
  *  Created on: Mar 25, 2023
- *      Author: ruben
+ *      Author: Ruben Agustin & Hao Feng
  */
 
 #ifndef COLOR_SENSOR_H
