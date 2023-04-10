@@ -139,8 +139,9 @@ void inline toggle_value(uint8_t *value){
 }
 
 void start_menu(){
+	printf("\e[8;24;85t"); // Set terminal size
 	fflush(stdin);
-	printf("***************** Sensor measurements by Ruben Agustin *****************\n\n");
+	printf("***************** Sensor measurements by Ruben Agustin & Hao Feng *****************\n\n");
 	fflush(stdout);
 	printf("-- Press 1 to start/disable accelerometer\n");
 	fflush(stdout);
