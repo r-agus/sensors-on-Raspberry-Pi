@@ -41,7 +41,7 @@ struct termios original_termios = {0}, modified_termios = {0};
 
 void sigint_handler(int signum) {
 	int time = 1;			// Original time that requires to close
-	printf("Exiting, wait till everything is closed\n");
+	printf("Exiting, wait till everything is closed                \n");
 	if(accelerometer_alive) {accelerometer_alive = 0; stop_acc_measurements(1); time+=3;}
 	if(color_sensor_alive)	{color_sensor_alive = 0; exit_handler(1); time+=3;}
 	tcsetattr(STDIN_FILENO, TCSANOW, &original_termios);
@@ -79,7 +79,7 @@ int main(){
 		}else if(result > 0 && c == '2') { 					// Start/stop color_sensor
 			c = 0;
 			if(!color_sensor_alive){
-				printf("Color sensor starts\n");
+				printf("Color sensor starts                                      \n");
 				fflush(stdout);
 				thread_error = pthread_create(&thread_acc, NULL, &start_color_sensor, NULL);
 				color_sensor_alive = 1;
