@@ -1,6 +1,6 @@
 CC=/home/ruben/Documents/buildroot-2022.02.9/output/host/bin/arm-buildroot-linux-gnueabihf-gcc
 CFLAGS=-c -Wall
-LDFLAGS=
+LDFLAGS=-lpthread
 
 SOURCES=accelerometer.c color_sensor.c main.c
 OBJECTS=$(SOURCES:.c=.o)
